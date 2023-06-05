@@ -161,11 +161,11 @@ public interface UserService {
 
 ## 联系信息和社区支持
 
-* [项目主页](https://your_project_home_url)
-* [问题追踪](https://your_issue_tracker_url)
-* [提交代码](https://your_submit_code_url)
+* [项目主页](https://github.com/panchanghe/hermes)
+* [问题追踪](https://github.com/panchanghe/hermes/issues)
+* [提交代码](https://github.com/panchanghe/hermes)
 
-对于任何问题或建议，请在 [Issues](https://gitee.com/panchanghe/aurora/issues) 中提交。同时也可以在我们的社区讨论、学习和分享相关经验故事。
+对于任何问题或建议，请在 [Issues](https://github.com/panchanghe/hermes/issues) 中提交。同时也可以在我们的社区讨论、学习和分享相关经验故事。
 
 ## 致谢
-感谢所有为 [Aurora](https://gitee.com/panchanghe/aurora) 做出贡献的朋友们！
+感谢所有为 [Hermes](https://github.com/panchanghe/hermes) 做出贡献的朋友们！
