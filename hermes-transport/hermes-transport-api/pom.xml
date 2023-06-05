@@ -2,9 +2,9 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <parent>
-        <groupId>top.javap</groupId>
+        <groupId>top.javap.hermes</groupId>
         <artifactId>hermes-transport</artifactId>
-        <version>0.1-SNAPSHOT</version>
+        <version>0.5</version>
     </parent>
 
     <artifactId>hermes-transport-api</artifactId>
@@ -19,7 +19,7 @@
 
     <dependencies>
         <dependency>
-            <groupId>top.javap</groupId>
+            <groupId>top.javap.hermes</groupId>
             <artifactId>hermes-serialization-api</artifactId>
             <version>${hermes.version}</version>
         </dependency>

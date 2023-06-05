@@ -20,7 +20,7 @@ Hermes是一个轻量级、高性能的RPC框架。它旨在简化开发流程�
 1、单独使用
 ```bash
 <dependency>
-    <groupId>top.javap</groupId>
+    <groupId>top.javap.hermes</groupId>
     <artifactId>hermes-core</artifactId>
     <version>${latest.version}</version>
 </dependency>
@@ -28,7 +28,7 @@ Hermes是一个轻量级、高性能的RPC框架。它旨在简化开发流程�
 2、在Spring Boot项目中使用
 ```bash
 <dependency>
-    <groupId>top.javap</groupId>
+    <groupId>top.javap.hermes</groupId>
     <artifactId>hermes-spring-boot-starter</artifactId>
     <version>${latest.version}</version>
 </dependency>

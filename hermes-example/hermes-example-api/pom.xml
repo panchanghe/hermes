@@ -2,12 +2,12 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <parent>
-        <groupId>top.javap</groupId>
+        <groupId>top.javap.hermes</groupId>
         <artifactId>hermes-example</artifactId>
-        <version>0.1-SNAPSHOT</version>
+        <version>0.5</version>
     </parent>
 
-    <groupId>top.javap</groupId>
+    <groupId>top.javap.hermes</groupId>
     <artifactId>hermes-example-api</artifactId>
     <packaging>jar</packaging>
 
@@ -20,9 +20,9 @@
 
     <dependencies>
         <dependency>
-            <groupId>top.javap</groupId>
+            <groupId>top.javap.hermes</groupId>
             <artifactId>hermes-spring-boot-starter</artifactId>
-            <version>0.1-SNAPSHOT</version>
+            <version>0.5</version>
             <scope>compile</scope>
         </dependency>
     </dependencies>

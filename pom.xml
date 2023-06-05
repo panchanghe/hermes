@@ -1,20 +1,41 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>top.javap</groupId>
+    <groupId>top.javap.hermes</groupId>
     <artifactId>hermes</artifactId>
-    <version>0.1-SNAPSHOT</version>
+    <version>0.5</version>
     <packaging>pom</packaging>
 
     <name>hermes</name>
-    <url>http://maven.apache.org</url>
+    <description>轻量级高性能RPC框架</description>
+    <url>https://github.com/panchanghe/hermes</url>
+    <licenses>
+        <license>
+            <name>MIT License</name>
+            <url>https://opensource.org/licenses/MIT</url>
+        </license>
+    </licenses>
+    <scm>
+        <connection>https://github.com/panchanghe/hermes.git</connection>
+        <url>https://github.com/panchanghe/hermes</url>
+    </scm>
+    <developers>
+        <developer>
+            <name>Createsequence</name>
+            <email>panchanghe1998@gmail.com</email>
+            <organization>panchanghe</organization>
+        </developer>
+    </developers>
+
+
     <modules>
+        <module>hermes-common</module>
         <module>hermes-core</module>
         <module>hermes-example</module>
-        <module>hermes-serialization</module>
         <module>hermes-registry</module>
-        <module>hermes-common</module>
+        <module>hermes-serialization</module>
         <module>hermes-transport</module>
         <module>hermes-spring-boot-starter</module>
     </modules>
@@ -30,7 +51,7 @@
         <kryo.serializers.version>0.45</kryo.serializers.version>
         <spring.version>5.3.24</spring.version>
         <spring.boot.version>2.7.6</spring.boot.version>
-        <hermes.version>0.1-SNAPSHOT</hermes.version>
+        <hermes.version>0.5</hermes.version>
     </properties>
 
     <dependencies>
@@ -55,33 +76,48 @@
     <dependencyManagement>
         <dependencies>
             <dependency>
-                <groupId>top.javap</groupId>
+                <groupId>top.javap.hermes</groupId>
                 <artifactId>hermes-common</artifactId>
                 <version>${hermes.version}</version>
             </dependency>
             <dependency>
-                <groupId>top.javap</groupId>
+                <groupId>top.javap.hermes</groupId>
                 <artifactId>hermes-core</artifactId>
                 <version>${hermes.version}</version>
             </dependency>
             <dependency>
-                <groupId>top.javap</groupId>
+                <groupId>top.javap.hermes</groupId>
                 <artifactId>hermes-serialization-kryo</artifactId>
                 <version>${hermes.version}</version>
             </dependency>
             <dependency>
-                <groupId>top.javap</groupId>
+                <groupId>top.javap.hermes</groupId>
                 <artifactId>hermes-registry-nacos</artifactId>
                 <version>${hermes.version}</version>
             </dependency>
             <dependency>
-                <groupId>top.javap</groupId>
+                <groupId>top.javap.hermes</groupId>
                 <artifactId>hermes-transport-netty</artifactId>
                 <version>${hermes.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
 
+    <profiles>
+        <profile>
+            <id>release</id>
+            <distributionManagement>
+                <snapshotRepository>
+                    <id>ossrh</id>
+                    <url>https://oss.sonatype.org/content/repositories/snapshots/</url>
+                </snapshotRepository>
+                <repository>
+                    <id>ossrh</id>
+                    <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+                </repository>
+            </distributionManagement>
+        </profile>
+    </profiles>
     <build>
         <plugins>
             <plugin>
@@ -159,5 +195,16 @@
             </plugin>
         </plugins>
     </build>
-
+    <distributionManagement>
+        <repository>
+            <id>ossrh</id>
+            <name>oss Staging Repository</name>
+            <url>https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+        </repository>
+        <snapshotRepository>
+            <id>ossrh</id>
+            <name>oss Snapshots Repository</name>
+            <url>https://s01.oss.sonatype.org/content/repositories/snapshots/</url>
+        </snapshotRepository>
+    </distributionManagement>
 </project>
