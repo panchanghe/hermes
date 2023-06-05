@@ -1,0 +1,7 @@
+hermes:
+  enabled: true
+  applicationName: app-1
+  port: 20881
+  registryAddress: nacos://127.0.0.1:8848
+  scan:
+    base-package: top.javap.example.service.impl

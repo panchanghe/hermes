@@ -1,0 +1,2 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+top.javap.hermes.spring.config.HermesAutoConfiguration

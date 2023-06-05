@@ -1,0 +1,4 @@
+hermes:
+  applicationName: app-2
+  port: 20882
+  registryAddress: nacos://127.0.0.1:8848
