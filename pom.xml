@@ -5,7 +5,7 @@
 
     <groupId>top.javap.hermes</groupId>
     <artifactId>hermes</artifactId>
-    <version>0.5</version>
+    <version>0.1</version>
     <packaging>pom</packaging>
 
     <name>hermes</name>
@@ -49,9 +49,10 @@
         <nacos.version>2.1.2</nacos.version>
         <kryo.version>5.2.0</kryo.version>
         <kryo.serializers.version>0.45</kryo.serializers.version>
+        <fastjson.version>2.0.33</fastjson.version>
         <spring.version>5.3.24</spring.version>
         <spring.boot.version>2.7.6</spring.boot.version>
-        <hermes.version>0.5</hermes.version>
+        <hermes.version>0.1</hermes.version>
     </properties>
 
     <dependencies>
@@ -88,6 +89,11 @@
             <dependency>
                 <groupId>top.javap.hermes</groupId>
                 <artifactId>hermes-serialization-kryo</artifactId>
+                <version>${hermes.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>top.javap.hermes</groupId>
+                <artifactId>hermes-serialization-json</artifactId>
                 <version>${hermes.version}</version>
             </dependency>
             <dependency>

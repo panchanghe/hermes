@@ -23,17 +23,17 @@ public class ConsumerTest {
 
     @Test
     public void consume() throws IOException {
-        System.err.println(helloFacade);
         System.err.println(helloFacade.helloService);
         HelloService helloService = helloFacade.helloService;
-        for (int i = 0; i < 10; i++) {
-            new Thread(() -> {
-                for (int j = 0; j < 1; j++) {
-                    String result = helloService.say(Thread.currentThread().getName() + "-" + j);
-                    System.err.println(Thread.currentThread().getName() + ":" + result);
-                }
-            }).start();
-        }
-        System.in.read();
+        System.err.println(helloService.say("spring"));
+//        for (int i = 0; i < 10; i++) {
+//            new Thread(() -> {
+//                for (int j = 0; j < 1; j++) {
+//                    String result = helloService.say(Thread.currentThread().getName() + "-" + j);
+//                    System.err.println(Thread.currentThread().getName() + ":" + result);
+//                }
+//            }).start();
+//        }
+//        System.in.read();
     }
 }

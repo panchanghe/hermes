@@ -19,7 +19,7 @@ import top.javap.hermes.spring.core.ServiceRegistryPostProcessor;
         matchIfMissing = true
 )
 @Configuration
-@EnableConfigurationProperties(HermesApplicationConfiguration.class)
+@EnableConfigurationProperties(HermesConfigurationProperties.class)
 public class HermesAutoConfiguration {
 
     @Bean

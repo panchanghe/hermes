@@ -4,7 +4,7 @@
     <parent>
         <groupId>top.javap.hermes</groupId>
         <artifactId>hermes-example</artifactId>
-        <version>0.5</version>
+        <version>0.1</version>
     </parent>
 
     <groupId>top.javap.hermes</groupId>
@@ -22,7 +22,7 @@
         <dependency>
             <groupId>top.javap.hermes</groupId>
             <artifactId>hermes-spring-boot-starter</artifactId>
-            <version>0.5</version>
+            <version>0.1</version>
             <scope>compile</scope>
         </dependency>
     </dependencies>

@@ -4,7 +4,7 @@
     <parent>
         <groupId>top.javap.hermes</groupId>
         <artifactId>hermes-transport</artifactId>
-        <version>0.5</version>
+        <version>0.1</version>
     </parent>
 
     <artifactId>hermes-transport-netty</artifactId>

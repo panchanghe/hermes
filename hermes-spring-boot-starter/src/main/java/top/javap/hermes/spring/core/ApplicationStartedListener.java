@@ -5,6 +5,7 @@ import org.springframework.boot.context.event.ApplicationStartedEvent;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.context.ApplicationListener;
+import top.javap.hermes.application.Application;
 
 /**
  * @author: pch
@@ -17,8 +18,8 @@ public class ApplicationStartedListener implements ApplicationListener<Applicati
 
     @Override
     public void onApplicationEvent(ApplicationStartedEvent event) {
-        HermesSpringApplication hermesSpringApplication = new HermesSpringApplication(applicationContext);
-        hermesSpringApplication.start();
+        Application application = new HermesSpringApplication(applicationContext);
+        application.start();
     }
 
     @Override

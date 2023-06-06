@@ -3,14 +3,14 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>top.javap.hermes</groupId>
-        <artifactId>hermes-registry</artifactId>
+        <artifactId>hermes-serialization</artifactId>
         <version>0.1</version>
     </parent>
 
-    <artifactId>hermes-registry-api</artifactId>
+    <artifactId>hermes-serialization-json</artifactId>
     <packaging>jar</packaging>
 
-    <name>hermes-registry-api</name>
+    <name>hermes-serialization-json</name>
     <url>http://maven.apache.org</url>
 
     <properties>
@@ -18,6 +18,15 @@
     </properties>
 
     <dependencies>
-
+        <dependency>
+            <groupId>top.javap.hermes</groupId>
+            <artifactId>hermes-serialization-api</artifactId>
+            <version>${hermes.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>fastjson</artifactId>
+            <version>${fastjson.version}</version>
+        </dependency>
     </dependencies>
 </project>

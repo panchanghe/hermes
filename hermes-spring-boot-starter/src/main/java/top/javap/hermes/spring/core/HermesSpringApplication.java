@@ -12,7 +12,7 @@ import top.javap.hermes.enums.Scope;
 import top.javap.hermes.interceptor.Interceptor;
 import top.javap.hermes.registry.RegistryConfig;
 import top.javap.hermes.spring.annotation.HermesService;
-import top.javap.hermes.spring.config.HermesApplicationConfiguration;
+import top.javap.hermes.spring.config.HermesConfigurationProperties;
 
 import java.util.Collection;
 import java.util.List;
@@ -93,7 +93,7 @@ public class HermesSpringApplication extends Application {
     }
 
     private void initApplicationConfig() {
-        HermesApplicationConfiguration configuration = context.getBean(HermesApplicationConfiguration.class);
+        HermesConfigurationProperties configuration = context.getBean(HermesConfigurationProperties.class);
         ApplicationConfig applicationConfig = new ApplicationConfig();
         applicationConfig.setApplicationName(configuration.getApplicationName());
         if (StringUtils.isNotEmpty(configuration.getProtocol())) {

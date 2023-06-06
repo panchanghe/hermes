@@ -8,7 +8,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
  * @date: 2023/6/1
  **/
 @ConfigurationProperties(prefix = "hermes")
-public class HermesApplicationConfiguration {
+public class HermesConfigurationProperties {
 
     private String applicationName;
     private String protocol;

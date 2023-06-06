@@ -29,7 +29,7 @@ public class ServiceRegistryPostProcessor implements BeanDefinitionRegistryPostP
 
     @Override
     public void postProcessBeanFactory(ConfigurableListableBeanFactory configurableListableBeanFactory) throws BeansException {
-
+        // NOP
     }
 
     @Override
