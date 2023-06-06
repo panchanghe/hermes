@@ -5,7 +5,8 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
-import top.javap.example.service.HelloService;
+import top.javap.example.domain.User;
+import top.javap.example.service.UserService;
 
 import java.io.IOException;
 
@@ -23,17 +24,17 @@ public class ConsumerTest {
 
     @Test
     public void consume() throws IOException {
-        System.err.println(helloFacade.helloService);
-        HelloService helloService = helloFacade.helloService;
-        System.err.println(helloService.say("spring"));
-//        for (int i = 0; i < 10; i++) {
-//            new Thread(() -> {
-//                for (int j = 0; j < 1; j++) {
-//                    String result = helloService.say(Thread.currentThread().getName() + "-" + j);
-//                    System.err.println(Thread.currentThread().getName() + ":" + result);
-//                }
-//            }).start();
-//        }
-//        System.in.read();
+        final UserService userService = helloFacade.getUserService();
+        User user = userService.get("Spring");
+        System.err.println(user);
+        userService.getByAsync("Async Spring").whenComplete((r, e) -> {
+            if (e != null) {
+                e.printStackTrace();
+            } else {
+                System.err.println(r);
+            }
+        });
+        user.setName("oneway");
+        userService.oneway(user);
     }
 }

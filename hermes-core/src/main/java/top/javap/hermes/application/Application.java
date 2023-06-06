@@ -17,6 +17,7 @@ import top.javap.hermes.protocol.ProtocolFactory;
 import top.javap.hermes.proxy.ProxyFactory;
 import top.javap.hermes.util.Assert;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -35,15 +36,15 @@ import java.util.stream.Collectors;
 public class Application {
 
     private ApplicationConfig applicationConfig;
-    private List<ServiceConfig> services;
-    private List<ReferenceConfig> references;
+    private List<ServiceConfig> services = new ArrayList<>();
+    private List<ReferenceConfig> references = new ArrayList<>();
     private RouterChain routerChain = new RouterChain();
     private List<Interceptor> providerInterceptors;
     private List<Interceptor> consumerInterceptors;
 
     private Set<String> referenceApplications = new HashSet<>();
     protected Map<String, Invoker> appInvokers = new HashMap<>();
-    private final AtomicInteger status = new AtomicInteger(CommConstant.APPLICATION_STATUS_CREATE);
+    private final AtomicInteger status = new AtomicInteger(CommConstant.APPLICATION_STATUS_CREATED);
 
     public Application() {
     }
@@ -97,7 +98,7 @@ public class Application {
     }
 
     public void start() {
-        if (status.compareAndSet(CommConstant.APPLICATION_STATUS_CREATE, CommConstant.APPLICATION_STATUS_RUNNING)) {
+        if (status.compareAndSet(CommConstant.APPLICATION_STATUS_CREATED, CommConstant.APPLICATION_STATUS_RUNNING)) {
             initialize();
             exportService();
             referService();

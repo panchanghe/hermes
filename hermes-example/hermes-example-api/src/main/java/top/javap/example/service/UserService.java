@@ -10,14 +10,12 @@ import java.util.concurrent.CompletableFuture;
  * @Date: 2023/5/18 14:23
  * @Description:
  */
-public interface HelloService {
+public interface UserService {
 
-    String say(String name);
+    User get(String name);
 
-    CompletableFuture<String> asyncSay(String name);
+    CompletableFuture<User> getByAsync(String name);
 
     @RpcMethod(oneway = true)
-    void oneway(String name);
-
-    User exchange(User user);
+    void oneway(User user);
 }

@@ -84,14 +84,16 @@ public abstract class AbstractProtocol implements Protocol {
     protected abstract Client createClient(String host, int port, Transporter transporter);
 
     protected <T> void doExport(Application application) {
-        for (ServiceConfig<T> serviceConfig : application.getServices()) {
-            for (Method method : serviceConfig.getInterfaceClass().getDeclaredMethods()) {
-                MethodMetadata methodMetadata = MethodMetadataManager.register(serviceConfig, method);
-                Invoker invoker = wrapperInvoker(serviceConfig.getRef(), method);
-                invoker = application.applyProviderInterceptor(invoker);
-                Invoker oldValue = INVOKER_CACHE.put(methodMetadata.getKey(), invoker);
-                if (oldValue != null) {
-                    throw new RuntimeException("service conflict:" + methodMetadata);
+        if (CollectionUtil.isNotEmpty(application.getServices())) {
+            for (ServiceConfig<T> serviceConfig : application.getServices()) {
+                for (Method method : serviceConfig.getInterfaceClass().getDeclaredMethods()) {
+                    MethodMetadata methodMetadata = MethodMetadataManager.register(serviceConfig, method);
+                    Invoker invoker = wrapperInvoker(serviceConfig.getRef(), method);
+                    invoker = application.applyProviderInterceptor(invoker);
+                    Invoker oldValue = INVOKER_CACHE.put(methodMetadata.getKey(), invoker);
+                    if (oldValue != null) {
+                        throw new RuntimeException("service key conflict:" + methodMetadata);
+                    }
                 }
             }
         }

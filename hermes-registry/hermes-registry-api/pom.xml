@@ -4,7 +4,7 @@
     <parent>
         <groupId>top.javap.hermes</groupId>
         <artifactId>hermes-registry</artifactId>
-        <version>0.1</version>
+        <version>0.2-SNAPSHOT</version>
     </parent>
 
     <artifactId>hermes-registry-api</artifactId>

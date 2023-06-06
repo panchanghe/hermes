@@ -1,6 +1,5 @@
 package top.javap.example;
 
-import org.springframework.stereotype.Component;
 import top.javap.hermes.annotation.ApplyScope;
 import top.javap.hermes.enums.Scope;
 import top.javap.hermes.interceptor.Interceptor;
@@ -13,7 +12,7 @@ import top.javap.hermes.remoting.message.Invocation;
  * @description:
  * @date: 2023/6/2
  **/
-@Component
+//@Component
 @ApplyScope(scope = Scope.CONSUMER)
 public class LogInterceptor implements Interceptor {
 

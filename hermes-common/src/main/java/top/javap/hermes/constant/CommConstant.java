@@ -14,9 +14,9 @@ public interface CommConstant {
     String DEFAULT_LOAD_BALANCE = "random";
 
     // 应用状态
-    Integer APPLICATION_STATUS_CREATE = 0;
+    Integer APPLICATION_STATUS_CREATED = 0;
     Integer APPLICATION_STATUS_RUNNING = 1;
-    Integer APPLICATION_STATUS_DESTROY = 2;
+    Integer APPLICATION_STATUS_DESTROYED = 2;
 
     // 线程模型相关
     int DEFAULT_ACCEPT_THREADS = 1;
