@@ -1,18 +1,22 @@
 package top.javap.hermes.spring.core;
 
+import com.google.common.collect.Lists;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
-import top.javap.hermes.annotation.Intercept;
+import top.javap.hermes.annotation.ApplyScope;
 import top.javap.hermes.application.Application;
 import top.javap.hermes.application.ApplicationConfig;
+import top.javap.hermes.cluster.Router;
 import top.javap.hermes.config.DefaultServiceConfig;
 import top.javap.hermes.config.ServiceConfig;
 import top.javap.hermes.enums.Scope;
 import top.javap.hermes.interceptor.Interceptor;
 import top.javap.hermes.spring.annotation.HermesService;
 import top.javap.hermes.spring.config.HermesConfigurationProperties;
+import top.javap.hermes.util.SortUtil;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
@@ -39,6 +43,7 @@ public class HermesSpringApplication extends Application {
             initApplicationConfig();
             initServices();
             initReferences();
+            initRouters();
             initIntercepts();
         }
     }
@@ -52,30 +57,39 @@ public class HermesSpringApplication extends Application {
         });
     }
 
+    private void initRouters() {
+        List<Router> routers = Lists.newArrayList(context.getBeansOfType(Router.class).values());
+        SortUtil.sort(routers);
+        getRouterChain().addRouter(routers);
+    }
+
     private void initReferences() {
         setReferences(InvokerDelegateManager.referenceConfigSet().stream().collect(Collectors.toList()));
     }
 
     private void initIntercepts() {
+        final List<Interceptor> consumerInterceptors = new ArrayList<>();
+        final List<Interceptor> providerInterceptors = new ArrayList<>();
         Collection<Interceptor> interceptors = context.getBeansOfType(Interceptor.class).values();
         interceptors.forEach(i -> {
             Scope scope = Scope.ALL;
-            int order = 1;
-            Intercept intercept = i.getClass().getAnnotation(Intercept.class);
-            if (Objects.nonNull(intercept)) {
-                scope = intercept.applyScope();
-                order = intercept.order();
+            ApplyScope applyScope = i.getClass().getAnnotation(ApplyScope.class);
+            if (Objects.nonNull(applyScope)) {
+                scope = applyScope.scope();
             }
-            // todo order
             if (Scope.ALL.equals(scope)) {
-                addConsumerInterceptor(i);
-                addProviderInterceptor(i);
+                consumerInterceptors.add(i);
+                providerInterceptors.add(i);
             } else if (Scope.CONSUMER.equals(scope)) {
-                addConsumerInterceptor(i);
+                consumerInterceptors.add(i);
             } else if (Scope.PROVIDER.equals(scope)) {
-                addProviderInterceptor(i);
+                providerInterceptors.add(i);
             }
         });
+        SortUtil.sort(consumerInterceptors);
+        SortUtil.sort(providerInterceptors);
+        super.setConsumerInterceptors(consumerInterceptors);
+        super.setProviderInterceptors(providerInterceptors);
     }
 
     private void initServices() {

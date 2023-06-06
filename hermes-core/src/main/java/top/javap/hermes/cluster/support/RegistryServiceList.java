@@ -1,5 +1,6 @@
 package top.javap.hermes.cluster.support;
 
+import top.javap.hermes.cluster.RouterChain;
 import top.javap.hermes.cluster.ServiceList;
 import top.javap.hermes.common.Properties;
 import top.javap.hermes.constant.DictConstant;
@@ -28,19 +29,20 @@ public class RegistryServiceList implements ServiceList {
     private final Registry registry;
     private final String subscribeService;
     private final Transporter transporter;
+    private final RouterChain routerChain;
     private List<Invoker> invokers;
 
-    public RegistryServiceList(Registry registry, String subscribeService, Transporter transporter) {
+    public RegistryServiceList(Registry registry, String subscribeService, RouterChain routerChain, Transporter transporter) {
         this.registry = registry;
         this.subscribeService = subscribeService;
         this.transporter = transporter;
+        this.routerChain = routerChain;
         subscribeService();
     }
 
     @Override
     public List<Invoker> list(Invocation invocation) {
-        // todo route
-        return invokers;
+        return routerChain.route(invokers, invocation);
     }
 
     private void subscribeService() {

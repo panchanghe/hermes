@@ -1,21 +1,24 @@
 # Hermes
-
 Hermes是一个轻量级、高性能的RPC框架。它旨在简化开发流程、改善代码质量和提高开发效率，让调用远程服务像调用本地方法一样简单！
-
 ![Hermes Logo](https://s2.xptou.com/2023/06/02/6479dc23717bd.jpg)
 
 ## 特性
+- 轻量级：代码库小，只包含最基本的功能
+- 高性能：针对性能进行了优化
+- 简单易用：采用简洁的API，方便快速上手
+- 良好的扩展性：核心组件均支持扩展
+- 良好的文档支持：提供完善的使用文档，为开发者提供便利
+- 无缝整合SpringBoot
 
-* 轻量级：代码库小，只包含最基本的功能
-* 高性能：针对性能进行了优化，以便在不同的环境中实现高性能
-* 简单易用：采用简洁的API，方便用户快速上手
-* 良好的文档支持：提供完善的使用文档，为开发者提供便利
-* 活跃的社区：积极参与的社区支持，代码库和文档得到持续更新和完善
-* 无缝整合SpringBoot
+## 性能优化
+- 高度紧凑且轻量的自定义通信协议
+- 仅用4个字节来定位服务，反观dubbo则要传输一堆数据
+- Kryo高性能序列化
+- Netty高性能网络IO框架
+- 序列化&反序列化时，直接从缓冲区读取/写入，减少内存拷贝的次数(TODO)
 
 ## 安装
-
-请确保您已安装 ``Maven``
+请确保您已安装 `Maven`
 
 1、单独使用
 ```bash
@@ -66,15 +69,28 @@ System.err.println(user);
 ```
 
 2、在Spring Boot中使用
-在`application.yaml`对Hermes进行配置
+在`application.yaml`对Hermes进行配置，下面是一份完整配置，实际上绝大多数配置都有默认值，你可以对配置进行简化。
 ```yaml
 hermes:
-  enabled: true
   applicationName: fx-user
+  protocol: hermes
   port: 20430
-  registryAddress: nacos://127.0.0.1:8848
+  cluster: failfast
+  loadBalance: random
   scan:
-    base-package: org.example.service
+    base-packages: top.javap.example.service
+  registry-config:
+    host: 127.0.0.1
+    port: 8848
+  transporter-config:
+    accept-threads: 2
+    io-threads: 10
+    tcp-no-delay: false
+  executor-config:
+    core-pool-size: 10
+    maximum-pool-size: 100
+    keep-alive-seconds: 60
+    queues: 1000
 ```
 
 给需要暴露的服务加上`@HermesService`注解
@@ -97,29 +113,44 @@ public class UserServiceImpl implements UserService {
 private UserService userService;
 ```
 
-### 拦截器
-Hermes拦截器接口是：`top.javap.hermes.interceptor.Interceptor`，拦截器可以同时应用于提供者和消费者，也可只引用于一方。
-
-1、手动注册拦截器
+### 服务路由
+服务路由接口是：`top.javap.hermes.cluster.Router`，通过路由可以轻松实现灰度发布、蓝绿发布等能力。
+1、实现路由并交给Spring管理
 ```java
-application.addConsumerInterceptor(new MyInterceptor());
-application.addProviderInterceptor(new MyInterceptor());
+@Component
+public class MyRouter implements Router {
+    @Override
+    public int getOrder() {
+        return 1;
+    }
+
+    @Override
+    public List<Invoker> route(List<Invoker> invokers, Invocation invocation) {
+        // your rule
+        return invokers;
+    }
+}
 ```
 
-2、通过Spring注入拦截器
-```java
-@Intercept(
-        applyScope = Scope.CONSUMER,
-        order = 1
-)
-@Component
-public class MyInterceptor implements Interceptor {
+### 拦截器
+Hermes拦截器接口是：`top.javap.hermes.interceptor.Interceptor`，拦截器可以同时应用于提供者和消费者，也可只应用于一方。默认应用于两端，可通过`@ApplyScope`注解配置。
 
+1、实现拦截器并交给Spring管理
+```java
+@Component
+@ApplyScope(scope = Scope.CONSUMER)
+public class MyInterceptor implements Interceptor {
+    @Override
     public Result intercept(Invoker invoker, Invocation invocation) {
-        // before...
+        // before....
         Result result = invoker.invoke(invocation);
-        // after...
+        // after....
         return result;
+    }
+
+    @Override
+    public int getOrder() {
+        return 1;
     }
 }
 ```

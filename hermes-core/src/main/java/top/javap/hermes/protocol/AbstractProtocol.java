@@ -14,6 +14,7 @@ import top.javap.hermes.metadata.MethodMetadata;
 import top.javap.hermes.remoting.transport.Client;
 import top.javap.hermes.remoting.transport.Server;
 import top.javap.hermes.remoting.transport.Transporter;
+import top.javap.hermes.util.CollectionUtil;
 
 import java.lang.reflect.Method;
 import java.util.Objects;
@@ -34,7 +35,9 @@ public abstract class AbstractProtocol implements Protocol {
     @Override
     public void export(Application application) {
         doExport(application);
-        openServer(application.getApplicationConfig());
+        if (CollectionUtil.isNotEmpty(application.getServices())) {
+            openServer(application.getApplicationConfig());
+        }
     }
 
     @Override

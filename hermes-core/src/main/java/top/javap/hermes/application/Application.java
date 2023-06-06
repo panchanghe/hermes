@@ -2,6 +2,7 @@ package top.javap.hermes.application;
 
 import top.javap.hermes.cluster.Cluster;
 import top.javap.hermes.cluster.ClusterFactory;
+import top.javap.hermes.cluster.RouterChain;
 import top.javap.hermes.cluster.loadbalance.LoadBalanceFactory;
 import top.javap.hermes.cluster.support.RegistryServiceList;
 import top.javap.hermes.common.Properties;
@@ -16,7 +17,6 @@ import top.javap.hermes.protocol.ProtocolFactory;
 import top.javap.hermes.proxy.ProxyFactory;
 import top.javap.hermes.util.Assert;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -35,12 +35,14 @@ import java.util.stream.Collectors;
 public class Application {
 
     private ApplicationConfig applicationConfig;
-    private List<ServiceConfig> services = new ArrayList<>();
-    private List<ReferenceConfig> references = new ArrayList<>();
+    private List<ServiceConfig> services;
+    private List<ReferenceConfig> references;
+    private RouterChain routerChain = new RouterChain();
+    private List<Interceptor> providerInterceptors;
+    private List<Interceptor> consumerInterceptors;
+
     private Set<String> referenceApplications = new HashSet<>();
     protected Map<String, Invoker> appInvokers = new HashMap<>();
-    private final List<Interceptor> providerInterceptors = new ArrayList<>();
-    private final List<Interceptor> consumerInterceptors = new ArrayList<>();
     private final AtomicInteger status = new AtomicInteger(CommConstant.APPLICATION_STATUS_CREATE);
 
     public Application() {
@@ -72,6 +74,26 @@ public class Application {
 
     public void setReferences(List<ReferenceConfig> references) {
         this.references = references;
+    }
+
+    public List<Interceptor> getProviderInterceptors() {
+        return providerInterceptors;
+    }
+
+    public void setProviderInterceptors(List<Interceptor> providerInterceptors) {
+        this.providerInterceptors = providerInterceptors;
+    }
+
+    public List<Interceptor> getConsumerInterceptors() {
+        return consumerInterceptors;
+    }
+
+    public void setConsumerInterceptors(List<Interceptor> consumerInterceptors) {
+        this.consumerInterceptors = consumerInterceptors;
+    }
+
+    public RouterChain getRouterChain() {
+        return routerChain;
     }
 
     public void start() {
@@ -144,7 +166,7 @@ public class Application {
         referenceApplications.forEach(app -> {
             Cluster cluster = ClusterFactory.get(applicationConfig.getCluster());
             Invoker invoker = cluster.aggregation(new RegistryServiceList(applicationConfig.getRegistry(), app,
-                            applicationConfig.getTransporter()),
+                            routerChain, applicationConfig.getTransporter()),
                     LoadBalanceFactory.get(applicationConfig.getLoadBalance()));
             invoker = applyConsumerInterceptor(invoker);
             appInvokers.put(app, invoker);
@@ -158,13 +180,5 @@ public class Application {
         properties.put(DictConstant.PORT, applicationConfig.getPort());
         properties.getMetadata().put(DictConstant.PROTOCOL, applicationConfig.getProtocol());
         return properties;
-    }
-
-    public void addConsumerInterceptor(Interceptor interceptor) {
-        this.consumerInterceptors.add(interceptor);
-    }
-
-    public void addProviderInterceptor(Interceptor interceptor) {
-        this.providerInterceptors.add(interceptor);
     }
 }
