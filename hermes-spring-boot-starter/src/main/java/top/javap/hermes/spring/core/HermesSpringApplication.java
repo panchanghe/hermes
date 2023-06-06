@@ -10,7 +10,6 @@ import top.javap.hermes.config.DefaultServiceConfig;
 import top.javap.hermes.config.ServiceConfig;
 import top.javap.hermes.enums.Scope;
 import top.javap.hermes.interceptor.Interceptor;
-import top.javap.hermes.registry.RegistryConfig;
 import top.javap.hermes.spring.annotation.HermesService;
 import top.javap.hermes.spring.config.HermesConfigurationProperties;
 
@@ -93,40 +92,27 @@ public class HermesSpringApplication extends Application {
     }
 
     private void initApplicationConfig() {
-        HermesConfigurationProperties configuration = context.getBean(HermesConfigurationProperties.class);
+        HermesConfigurationProperties properties = context.getBean(HermesConfigurationProperties.class);
         ApplicationConfig applicationConfig = new ApplicationConfig();
-        applicationConfig.setApplicationName(configuration.getApplicationName());
-        if (StringUtils.isNotEmpty(configuration.getProtocol())) {
-            applicationConfig.setProtocol(configuration.getProtocol());
+        applicationConfig.setApplicationName(properties.getApplicationName());
+        if (StringUtils.isNotEmpty(properties.getProtocol())) {
+            applicationConfig.setProtocol(properties.getProtocol());
         }
-        if (StringUtils.isNotEmpty(configuration.getHost())) {
-            applicationConfig.setHost(configuration.getHost());
+        if (StringUtils.isNotEmpty(properties.getHost())) {
+            applicationConfig.setHost(properties.getHost());
         }
-        if (Objects.nonNull(configuration.getPort())) {
-            applicationConfig.setPort(configuration.getPort());
+        if (Objects.nonNull(properties.getPort())) {
+            applicationConfig.setPort(properties.getPort());
         }
-        if (StringUtils.isNotEmpty(configuration.getCluster())) {
-            applicationConfig.setCluster(configuration.getCluster());
+        if (StringUtils.isNotEmpty(properties.getCluster())) {
+            applicationConfig.setCluster(properties.getCluster());
         }
-        if (StringUtils.isNotEmpty(configuration.getLoadBalance())) {
-            applicationConfig.setLoadBalance(configuration.getLoadBalance());
+        if (StringUtils.isNotEmpty(properties.getLoadBalance())) {
+            applicationConfig.setLoadBalance(properties.getLoadBalance());
         }
-        if (Objects.nonNull(configuration.getAcceptThreads())) {
-            applicationConfig.setAcceptThreads(configuration.getAcceptThreads());
-        }
-        if (Objects.nonNull(configuration.getIoThreads())) {
-            applicationConfig.setIoThreads(configuration.getIoThreads());
-        }
-        if (Objects.nonNull(configuration.getBizThreads())) {
-            applicationConfig.setBizThreads(configuration.getBizThreads());
-        }
-        if (Objects.nonNull(configuration.getQueues())) {
-            applicationConfig.setQueues(configuration.getQueues());
-        }
-        if (StringUtils.isNotEmpty(configuration.getTransporterClass())) {
-            applicationConfig.setTransporterClass(configuration.getTransporterClass());
-        }
-        applicationConfig.setRegistryConfig(new RegistryConfig(configuration.getRegistryAddress()));
+        applicationConfig.setRegistryConfig(properties.getRegistryConfig());
+        applicationConfig.setTransporterConfig(properties.getTransporterConfig());
+        applicationConfig.setExecutorConfig(properties.getExecutorConfig());
         super.setApplicationConfig(applicationConfig);
     }
 }

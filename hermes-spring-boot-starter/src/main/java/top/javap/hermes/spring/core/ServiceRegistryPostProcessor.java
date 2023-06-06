@@ -19,11 +19,12 @@ public class ServiceRegistryPostProcessor implements BeanDefinitionRegistryPostP
 
     @Override
     public void postProcessBeanDefinitionRegistry(BeanDefinitionRegistry registry) throws BeansException {
-        String scanPackage = environment.getProperty("hermes.scan.base-package");
-        if (StringUtils.isNotBlank(scanPackage)) {
+        String scanPackages = environment.getProperty("hermes.scan.base-packages");
+        if (StringUtils.isNotBlank(scanPackages)) {
+            String[] packages = scanPackages.split(",");
             ClassPathServiceScanner scanner = new ClassPathServiceScanner(registry);
             scanner.registerFilters();
-            scanner.scan(scanPackage);
+            scanner.scan(packages);
         }
     }
 

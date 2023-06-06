@@ -1,4 +1,18 @@
 hermes:
   applicationName: app-2
-  port: 20882
-  registryAddress: nacos://127.0.0.1:8848
+  protocol: hermes
+  port: 20431
+  cluster: failfast
+  loadBalance: random
+  registry-config:
+    host: 127.0.0.1
+    port: 8848
+  transporter-config:
+    accept-threads: 2
+    io-threads: 10
+    tcp-no-delay: false
+  executor-config:
+    core-pool-size: 10
+    maximum-pool-size: 100
+    keep-alive-seconds: 60
+    queues: 1000

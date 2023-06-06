@@ -1,6 +1,7 @@
 package top.javap.hermes.registry;
 
 import com.alibaba.nacos.api.NacosFactory;
+import com.alibaba.nacos.api.config.ConfigService;
 import com.alibaba.nacos.api.exception.NacosException;
 import com.alibaba.nacos.api.naming.NamingService;
 import com.alibaba.nacos.api.naming.listener.Event;
@@ -25,10 +26,13 @@ public class NacosRegistry implements Registry {
     private static final Logger log = LoggerFactory.getLogger(NacosRegistry.class);
 
     private final NamingService namingService;
+    private final ConfigService configService;
 
     public NacosRegistry(RegistryConfig config) {
         try {
-            this.namingService = NacosFactory.createNamingService(config.getHost() + ":" + config.getPort());
+            final String address = config.getHost() + ":" + config.getPort();
+            this.namingService = NacosFactory.createNamingService(address);
+            this.configService = NacosFactory.createConfigService(address);
         } catch (NacosException e) {
             log.error("namingService create error", e);
             throw new RuntimeException(e);
@@ -45,6 +49,7 @@ public class NacosRegistry implements Registry {
         instance.setMetadata(properties.getMetadata());
         try {
             namingService.registerInstance(instance.getServiceName(), instance);
+            // todo 元数据
         } catch (NacosException e) {
             log.error("service register error", e);
             throw new RuntimeException(e);

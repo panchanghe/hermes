@@ -13,8 +13,6 @@ import io.netty.channel.socket.nio.NioServerSocketChannel;
 import io.netty.channel.socket.nio.NioSocketChannel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import top.javap.hermes.common.Properties;
-import top.javap.hermes.constant.DictConstant;
 import top.javap.hermes.remoting.MessageHandler;
 import top.javap.hermes.remoting.codec.ClientCodec;
 import top.javap.hermes.remoting.codec.ServerCodec;
@@ -27,21 +25,18 @@ import top.javap.hermes.remoting.codec.ServerCodec;
 public class NettyTransporter implements Transporter {
     private static final Logger log = LoggerFactory.getLogger(NettyTransporter.class);
 
-    private final int acceptThreads;
-    private final int ioThreads;
+    private final TransporterConfig config;
 
-    public NettyTransporter(Properties properties) {
-        acceptThreads = properties.getInt(DictConstant.ACCTPE_THREADS);
-        ioThreads = properties.getInt(DictConstant.IO_THREADS);
+    public NettyTransporter(TransporterConfig config) {
+        this.config = config;
     }
 
     @Override
     public <Request> Server bind(String host, int port, MessageHandler<Request> handler) {
         ServerBootstrap bootstrap = new ServerBootstrap()
-                .group(new NioEventLoopGroup(acceptThreads), new NioEventLoopGroup(ioThreads))
+                .group(new NioEventLoopGroup(config.getAcceptThreads()), new NioEventLoopGroup(config.getIoThreads()))
                 .channel(NioServerSocketChannel.class)
-                .option(ChannelOption.SO_REUSEADDR, Boolean.TRUE)
-                .childOption(ChannelOption.TCP_NODELAY, Boolean.TRUE)
+                .childOption(ChannelOption.TCP_NODELAY, config.isTcpNoDelay())
                 .childOption(ChannelOption.ALLOCATOR, PooledByteBufAllocator.DEFAULT)
                 .childHandler(new ChannelInitializer<SocketChannel>() {
                     @Override

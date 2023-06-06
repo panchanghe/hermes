@@ -1,4 +1,4 @@
-package top.javap.hermes.protocol;
+package top.javap.hermes.protocol.impl;
 
 import io.netty.channel.ChannelHandler;
 import org.slf4j.Logger;
@@ -12,6 +12,7 @@ import top.javap.hermes.invoke.Futures;
 import top.javap.hermes.invoke.Invoker;
 import top.javap.hermes.invoke.Result;
 import top.javap.hermes.invoke.remote.HermesInvoker;
+import top.javap.hermes.protocol.AbstractProtocol;
 import top.javap.hermes.remoting.MessageHandler;
 import top.javap.hermes.remoting.message.Invocation;
 import top.javap.hermes.remoting.message.Request;

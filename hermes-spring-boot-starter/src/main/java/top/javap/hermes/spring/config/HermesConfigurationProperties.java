@@ -1,6 +1,13 @@
 package top.javap.hermes.spring.config;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.boot.context.properties.NestedConfigurationProperty;
+import top.javap.hermes.config.ExecutorConfig;
+import top.javap.hermes.registry.RegistryConfig;
+import top.javap.hermes.remoting.transport.TransporterConfig;
+
+import java.util.LinkedHashSet;
+import java.util.Set;
 
 /**
  * @author: pch
@@ -16,14 +23,14 @@ public class HermesConfigurationProperties {
     private Integer port;
     private String cluster;
     private String loadBalance;
-
-    private Integer acceptThreads;
-    private Integer ioThreads;
-    private Integer bizThreads;
-    private Integer queues;
-
-    private String transporterClass;
-    private String registryAddress;
+    @NestedConfigurationProperty
+    private Scan scan;
+    @NestedConfigurationProperty
+    private RegistryConfig registryConfig = new RegistryConfig();
+    @NestedConfigurationProperty
+    private TransporterConfig transporterConfig = new TransporterConfig();
+    @NestedConfigurationProperty
+    private ExecutorConfig executorConfig = new ExecutorConfig();
 
     public String getApplicationName() {
         return applicationName;
@@ -73,51 +80,47 @@ public class HermesConfigurationProperties {
         this.loadBalance = loadBalance;
     }
 
-    public Integer getAcceptThreads() {
-        return acceptThreads;
+    public Scan getScan() {
+        return scan;
     }
 
-    public void setAcceptThreads(Integer acceptThreads) {
-        this.acceptThreads = acceptThreads;
+    public void setScan(Scan scan) {
+        this.scan = scan;
     }
 
-    public Integer getIoThreads() {
-        return ioThreads;
+    public RegistryConfig getRegistryConfig() {
+        return registryConfig;
     }
 
-    public void setIoThreads(Integer ioThreads) {
-        this.ioThreads = ioThreads;
+    public void setRegistryConfig(RegistryConfig registryConfig) {
+        this.registryConfig = registryConfig;
     }
 
-    public Integer getBizThreads() {
-        return bizThreads;
+    public TransporterConfig getTransporterConfig() {
+        return transporterConfig;
     }
 
-    public void setBizThreads(Integer bizThreads) {
-        this.bizThreads = bizThreads;
+    public void setTransporterConfig(TransporterConfig transporterConfig) {
+        this.transporterConfig = transporterConfig;
     }
 
-    public Integer getQueues() {
-        return queues;
+    public ExecutorConfig getExecutorConfig() {
+        return executorConfig;
     }
 
-    public void setQueues(Integer queues) {
-        this.queues = queues;
+    public void setExecutorConfig(ExecutorConfig executorConfig) {
+        this.executorConfig = executorConfig;
     }
 
-    public String getTransporterClass() {
-        return transporterClass;
-    }
+    static class Scan {
+        private Set<String> basePackages = new LinkedHashSet();
 
-    public void setTransporterClass(String transporterClass) {
-        this.transporterClass = transporterClass;
-    }
+        public Set<String> getBasePackages() {
+            return basePackages;
+        }
 
-    public String getRegistryAddress() {
-        return registryAddress;
-    }
-
-    public void setRegistryAddress(String registryAddress) {
-        this.registryAddress = registryAddress;
+        public void setBasePackages(Set<String> basePackages) {
+            this.basePackages = basePackages;
+        }
     }
 }

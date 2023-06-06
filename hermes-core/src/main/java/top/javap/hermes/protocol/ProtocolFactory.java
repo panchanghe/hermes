@@ -1,5 +1,7 @@
 package top.javap.hermes.protocol;
 
+import top.javap.hermes.protocol.impl.HermesProtocol;
+
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 

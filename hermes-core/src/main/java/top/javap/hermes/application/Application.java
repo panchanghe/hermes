@@ -14,7 +14,6 @@ import top.javap.hermes.interceptor.InterceptorInvoker;
 import top.javap.hermes.invoke.Invoker;
 import top.javap.hermes.protocol.ProtocolFactory;
 import top.javap.hermes.proxy.ProxyFactory;
-import top.javap.hermes.registry.RegistryFactory;
 import top.javap.hermes.util.Assert;
 
 import java.util.ArrayList;
@@ -77,7 +76,7 @@ public class Application {
 
     public void start() {
         if (status.compareAndSet(CommConstant.APPLICATION_STATUS_CREATE, CommConstant.APPLICATION_STATUS_RUNNING)) {
-            init();
+            initialize();
             exportService();
             referService();
         }
@@ -87,10 +86,11 @@ public class Application {
         // todo
     }
 
-    private void init() {
+    private void initialize() {
         referenceApplications = references.stream()
                 .map(ReferenceConfig::getApplicationName)
                 .collect(Collectors.toSet());
+        applicationConfig.initialize();
     }
 
     public <T> T refer(ReferenceConfig<T> referenceConfig) {
@@ -137,14 +137,14 @@ public class Application {
 
     private void exportService() {
         ProtocolFactory.getProtocol(applicationConfig.getProtocol()).export(this);
-        RegistryFactory.getRegistry(applicationConfig.getRegistryConfig()).register(buildRegistryProperties());
+        applicationConfig.getRegistry().register(buildRegistryProperties());
     }
 
     private void referService() {
         referenceApplications.forEach(app -> {
             Cluster cluster = ClusterFactory.get(applicationConfig.getCluster());
-            Invoker invoker = cluster.aggregation(new RegistryServiceList(RegistryFactory.getRegistry(applicationConfig.getRegistryConfig()),
-                            app, applicationConfig.getTransporter()),
+            Invoker invoker = cluster.aggregation(new RegistryServiceList(applicationConfig.getRegistry(), app,
+                            applicationConfig.getTransporter()),
                     LoadBalanceFactory.get(applicationConfig.getLoadBalance()));
             invoker = applyConsumerInterceptor(invoker);
             appInvokers.put(app, invoker);
