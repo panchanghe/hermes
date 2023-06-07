@@ -20,6 +20,11 @@
     <dependencies>
         <dependency>
             <groupId>top.javap.hermes</groupId>
+            <artifactId>hermes-spring-boot-starter</artifactId>
+            <version>0.2</version>
+        </dependency>
+        <dependency>
+            <groupId>top.javap.hermes</groupId>
             <artifactId>hermes-example-api</artifactId>
             <version>${hermes.version}</version>
         </dependency>

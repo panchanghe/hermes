@@ -10,11 +10,11 @@ hermes:
     host: 127.0.0.1
     port: 8848
   transporter-config:
-    accept-threads: 2
-    io-threads: 10
+    accept-threads: 1
+    io-threads: 8
     tcp-no-delay: false
   executor-config:
-    core-pool-size: 10
-    maximum-pool-size: 100
-    keep-alive-seconds: 60
+    core-pool-size: 200
+    maximum-pool-size: 200
+    keep-alive-seconds: 0
     queues: 1000
