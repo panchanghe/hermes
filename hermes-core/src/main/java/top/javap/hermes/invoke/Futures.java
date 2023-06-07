@@ -21,14 +21,14 @@ public class Futures {
     }
 
     public static void complete(Integer id, Object result) {
-        CompletableFuture future = FUTURE_CACHE.get(id);
+        CompletableFuture future = FUTURE_CACHE.remove(id);
         if (Objects.nonNull(future)) {
             future.complete(result);
         }
     }
 
     public static void completeException(Integer id, Throwable t) {
-        CompletableFuture future = FUTURE_CACHE.get(id);
+        CompletableFuture future = FUTURE_CACHE.remove(id);
         if (Objects.nonNull(future)) {
             future.completeExceptionally(t);
         }
