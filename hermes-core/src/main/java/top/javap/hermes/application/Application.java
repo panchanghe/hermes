@@ -39,8 +39,8 @@ public class Application {
     private List<ServiceConfig> services = new ArrayList<>();
     private List<ReferenceConfig> references = new ArrayList<>();
     private RouterChain routerChain = new RouterChain();
-    private List<Interceptor> providerInterceptors;
-    private List<Interceptor> consumerInterceptors;
+    private List<Interceptor> providerInterceptors = new ArrayList<>();
+    private List<Interceptor> consumerInterceptors = new ArrayList<>();
 
     private Set<String> referenceApplications = new HashSet<>();
     protected Map<String, Invoker> appInvokers = new HashMap<>();

@@ -2,6 +2,18 @@
 Hermes是一个轻量级、高性能的RPC框架。它旨在简化开发流程、改善代码质量和提高开发效率，让调用远程服务像调用本地方法一样简单！
 ![Hermes Logo](https://s2.xptou.com/2023/06/02/6479dc23717bd.jpg)
 
+架构设计
+
+![架构设计](https://s2.xptou.com/2023/06/07/647fd7960d41f.png)
+
+服务调用
+
+![服务调用](https://www.hualigs.cn/image/647fda7255b63.jpg)
+
+线程模型
+
+![线程模型](https://www.hualigs.cn/image/647fddba73b31.jpg)
+
 ## 特性
 - 轻量级：代码库小，只包含最基本的功能
 - 高性能：针对性能进行了优化
@@ -16,16 +28,16 @@ Hermes是一个轻量级、高性能的RPC框架。它旨在简化开发流程�
 - Kryo高性能序列化
 - Netty高性能网络IO框架
 - 序列化&反序列化时，直接从缓冲区读取/写入，减少内存拷贝的次数(TODO)
+- Javassist提升反射调用性能(TODO)
 
 ## 安装
-请确保您已安装 `Maven`
 
 1、单独使用
 ```bash
 <dependency>
     <groupId>top.javap.hermes</groupId>
     <artifactId>hermes-core</artifactId>
-    <version>${latest.version}</version>
+    <version>0.2</version>
 </dependency>
 ```
 2、在Spring Boot项目中使用
@@ -33,18 +45,23 @@ Hermes是一个轻量级、高性能的RPC框架。它旨在简化开发流程�
 <dependency>
     <groupId>top.javap.hermes</groupId>
     <artifactId>hermes-spring-boot-starter</artifactId>
-    <version>${latest.version}</version>
+    <version>0.2</version>
 </dependency>
 ```
 
 ## 使用
 1、单独使用
+
 很多时候，一个应用可能既是服务提供者，又是服务消费者，Hermes均把它们封装在Application中。
 ```java
 public static void main(String[] args) {
     ApplicationConfig config = new ApplicationConfig();
     config.setApplicationName("app-example");
-    config.setRegistryConfig(new RegistryConfig("nacos://127.0.0.1:8848"));
+    RegistryConfig registryConfig = new RegistryConfig();
+    registryConfig.setHost("127.0.0.1");
+    registryConfig.setPort(8848);
+    config.setRegistryConfig(registryConfig);
+    
     Application application = new Application();
     application.setApplicationConfig(config);
     ServiceConfig serviceConfig = new DefaultServiceConfig(UserService.class);
@@ -52,7 +69,7 @@ public static void main(String[] args) {
     serviceConfig.setVersion("v1");
     serviceConfig.setRef(new UserServiceImpl());
     application.setServices(Lists.newArrayList(serviceConfig));
-
+    
     ReferenceConfig referenceConfig = new DefaultReferenceConfig(UserService.class);
     referenceConfig.setApplicationName("app-example");
     referenceConfig.setGroup("g1");
@@ -69,6 +86,7 @@ System.err.println(user);
 ```
 
 2、在Spring Boot中使用
+
 在`application.yaml`对Hermes进行配置，下面是一份完整配置，实际上绝大多数配置都有默认值，你可以对配置进行简化。
 ```yaml
 hermes:
